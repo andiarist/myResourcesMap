@@ -1,0 +1,12 @@
+.infoBatteryBox {
+  color: aliceblue;
+  padding: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.boxColorRed {
+  background-color: red;
+}
+.boxColorGreen {
+  background-color: green;
+}
