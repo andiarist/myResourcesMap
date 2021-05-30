@@ -7,7 +7,7 @@ import {
   GoogleMap,
   Marker,
 } from 'react-google-maps';
-import './MapComponent.css';
+import './components.css';
 const {
   MarkerClusterer,
 } = require('react-google-maps/lib/components/addons/MarkerClusterer');
@@ -19,6 +19,7 @@ const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.
 
 const MapComponent = props => {
   const [activeMarkerId, setActiveMarkerId] = useState(null);
+  
   const handleActiveMarker = id => {
     console.log('markerId', id);
     if (id === activeMarkerId) {
