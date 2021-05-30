@@ -1,4 +1,6 @@
 import React from 'react';
+import T from 'prop-types';
+
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
 
@@ -30,7 +32,7 @@ function TableFilter({ marks }) {
     },
   ];
 
-  const NuevaFila = () => {
+  const ResourcesRows = () => {
     let fila = [];
     let indexTable = 0;
     if (marks && marks.length > 1) {
@@ -46,9 +48,7 @@ function TableFilter({ marks }) {
     }
     return fila;
   };
-  const data = NuevaFila();
-
-  console.log('data:', data);
+  const data = ResourcesRows();
 
   function onChange(pagination, filters, sorter, extra) {
     console.log();
@@ -56,5 +56,9 @@ function TableFilter({ marks }) {
 
   return <Table columns={columns} dataSource={data} onChange={onChange} />;
 }
+
+TableFilter.propTypes = {
+  marks: T.arrayOf(T.object),
+};
 
 export default TableFilter;

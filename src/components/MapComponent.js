@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import T from 'prop-types';
 
 import { compose, withProps, withHandlers } from 'recompose';
 import {
@@ -8,6 +9,7 @@ import {
   Marker,
 } from 'react-google-maps';
 import './components.css';
+
 const {
   MarkerClusterer,
 } = require('react-google-maps/lib/components/addons/MarkerClusterer');
@@ -19,9 +21,8 @@ const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.
 
 const MapComponent = props => {
   const [activeMarkerId, setActiveMarkerId] = useState(null);
-  
+
   const handleActiveMarker = id => {
-    console.log('markerId', id);
     if (id === activeMarkerId) {
       return;
     }
@@ -37,10 +38,9 @@ const MapComponent = props => {
         averageCenter
         enableRetinaIcons
         gridSize={20}>
-        {console.log(props)}
         {props.isMarkerShown &&
           props.marks &&
-          props.marks.map(({ id, y, x, batteryLevel }) => (
+          props.marks.map(({ id, y, x, batteryLevel, model }) => (
             <Marker
               position={{ lat: y, lng: x }}
               key={id}
@@ -57,7 +57,9 @@ const MapComponent = props => {
                     className={`infoBatteryBox ${
                       batteryLevel < 25 ? 'boxColorRed' : 'boxColorGreen'
                     }`}>
-                    BL:{batteryLevel}%
+                    Model: {model}
+                    <br />
+                    BL: {batteryLevel}%
                   </p>
                 </InfoBox>
               ) : null}
@@ -68,11 +70,16 @@ const MapComponent = props => {
   );
 };
 
+MapComponent.propTypes = {
+  isMarkerShown: T.bool,
+  marks: T.arrayOf(T.object),
+};
+
 export default compose(
   withProps({
     googleMapURL,
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
+    containerElement: <div style={{ height: `500px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withHandlers({
