@@ -19,7 +19,7 @@ This project is made with following technologies and features:
 npm install
 ```
 
-## Enviroment config
+## Environment config
 
 Rename .env.example to .env and check the settings:
 
