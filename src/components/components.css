@@ -10,3 +10,7 @@
 .boxColorGreen {
   background-color: green;
 }
+
+.item-ordered:hover {
+  cursor: pointer;
+}

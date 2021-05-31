@@ -1,40 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import T from 'prop-types';
 
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
 
 function TableFilter({ marks }) {
-  const columns = [
-    {
-      title: 'Licence Plate',
-      dataIndex: 'licencePlate',
-      key: 'licencePlate',
-      sorter: (a, b) => a.licencePlate - b.licencePlate,
-    },
-    {
-      title: 'Lat',
-      dataIndex: 'lat',
-      key: 'lat',
-      sorter: (a, b) => a.lat - b.lat,
-    },
-    {
-      title: 'Lng',
-      dataIndex: 'lng',
-      key: 'lng',
-      sorter: (a, b) => a.lng - b.lng,
-    },
-    {
-      title: 'Model',
-      dataIndex: 'model',
-      key: 'model',
-      sorter: (a, b) => a.model - b.model,
-    },
-  ];
-
   const ResourcesRows = () => {
     let fila = [];
-    let indexTable = 0;
+    let indexTable = 1;
     if (marks && marks.length > 1) {
       marks.forEach(mark =>
         fila.push({
@@ -48,13 +21,87 @@ function TableFilter({ marks }) {
     }
     return fila;
   };
-  const data = ResourcesRows();
+  // const [dataRows, setDataRows] = useState();
+  // console.log('dataRows:', dataRows);
+  //
+  // useEffect(() => {
+  //   setDataRows(ResourcesRows());
+  // }, []);
 
-  function onChange(pagination, filters, sorter, extra) {
-    console.log();
+  let data = ResourcesRows();
+  console.log('data:', data);
+  // const [filas, setFilas] = useState([]);
+
+  const pintarFilas = datos => {
+    if (!datos && datos.length <= 1) {
+      return console.log('no hay datos');
+    }
+    return datos.map(({ licencePlate, model, lat, lng, key }) => (
+      <tr key={key}>
+        <td>{key}</td>
+        <td>{licencePlate}</td>
+        <td>{lat}</td>
+        <td>{lng}</td>
+        <td>{model}</td>
+      </tr>
+    ));
+  };
+
+  // const renderFilas = () => {
+  //   let data = ResourcesRows();
+  //   console.log('data:', data);
+  //   setFilas(data);
+  //   return filas.map(({ licencePlate, model, lat, lng, key }) => (
+  //     <tr key={key}>
+  //       <td>{key}</td>
+  //       <td>{licencePlate}</td>
+  //       <td>{lat}</td>
+  //       <td>{lng}</td>
+  //       <td>{model}</td>
+  //     </tr>
+  //   ));
+  // };
+
+  function handleOrderNumber(ev) {
+    console.log('evento:', ev);
+    const newData = data.sort(function (a, b) {
+      return b.key - a.key;
+    });
+    console.log('data despues de ordenar:', newData);
+    // setFilas(newData);
+  }
+  function handleOrderString(ev) {
+    console.log('evento:', ev);
   }
 
-  return <Table columns={columns} dataSource={data} onChange={onChange} />;
+  const renderHeader = () => {
+    return (
+      <tr>
+        <th onClick={handleOrderNumber} className="item-ordered">
+          Indice
+        </th>
+        <th onClick={handleOrderString} className="item-ordered">
+          Licence Plate
+        </th>
+        <th onClick={handleOrderNumber} className="item-ordered">
+          Lat
+        </th>
+        <th onClick={handleOrderNumber} className="item-ordered">
+          Lng
+        </th>
+        <th onClick={handleOrderString} className="item-ordered">
+          Model
+        </th>
+      </tr>
+    );
+  };
+
+  return (
+    <table>
+      {renderHeader()}
+      {pintarFilas(data)}
+    </table>
+  );
 }
 
 TableFilter.propTypes = {
