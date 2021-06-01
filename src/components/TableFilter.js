@@ -1,96 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import T from 'prop-types';
-
-import 'antd/dist/antd.css';
-import { Table } from 'antd';
+import ascArrow from '../assets/asc.png';
+import dscArrow from '../assets/dsc.png';
 
 function TableFilter({ marks }) {
-  const [filter, setFilter] = useState(0);
+  const [filter, setFilter] = useState('none');
+  const [order, setOrder] = useState('asc');
   const [pagination, setPagination] = useState(0);
-  console.log('marks.length:', marks.length);
 
-  function elegirOrden(datos) {
+  function orderList(datos) {
     let lista = [];
-    switch (filter) {
-      case 1:
-        lista = orderString(datos, 'dsc');
-        console.log('lista a devolver despues de case 1:', lista);
-        return lista;
-      case 4:
-        lista = orderString(datos, 'dsc');
-        console.log('lista a devolver despues de case 4:', lista);
-        return lista;
-      case 5:
-        lista = orderNumber(datos, 'asc');
-        console.log('lista a devolver despues de case 5:', lista);
-        return lista;
-      case 8:
-        lista = orderNumber(datos, 'dsc');
-        console.log('lista a devolver despues de case 8:', lista);
-        return lista;
 
-      default:
-        return (lista = datos);
+    if (filter === 'licencePlate') {
+      if (order === 'asc') {
+        lista = datos.sort((a, b) =>
+          a.licencePlate
+            .toLowerCase()
+            .localeCompare(b.licencePlate.toLowerCase()),
+        );
+      } else {
+        lista = datos.sort((a, b) =>
+          b.licencePlate
+            .toLowerCase()
+            .localeCompare(a.licencePlate.toLowerCase()),
+        );
+      }
+    } else if (filter === 'y') {
+      if (order === 'asc') {
+        lista = datos.sort((a, b) => b.y - a.y);
+      } else {
+        lista = datos.sort((a, b) => a.y - b.y);
+      }
+    } else if (filter === 'x') {
+      if (order === 'asc') {
+        lista = datos.sort((a, b) => b.x - a.x);
+      } else {
+        lista = datos.sort((a, b) => a.x - b.x);
+      }
+    } else if (filter === 'model') {
+      if (order === 'asc') {
+        lista = datos.sort((a, b) =>
+          a.model.toLowerCase().localeCompare(b.model.toLowerCase()),
+        );
+      } else {
+        lista = datos.sort((a, b) =>
+          b.model.toLowerCase().localeCompare(a.model.toLowerCase()),
+        );
+      }
+    } else {
+      lista = datos;
     }
+
+    return lista;
   }
 
-  function orderNumber(arrayNumeros, option) {
-    if (option === 'asc') {
-      console.log('dentro de ordenNumber asc');
-      return arrayNumeros.sort((a, b) => b.y - a.y);
-    }
-    if (option === 'dsc') {
-      console.log('dentro de ordenNumber desc');
-      return arrayNumeros.sort((a, b) => a.y - b.y);
-    }
-  }
-
-  function orderString(arrayString, option) {
-    if (option === 'asc') {
-      console.log('dentro de orderString asc');
-      return arrayString.sort((a, b) =>
-        a.licencePlate
-          .toLowerCase()
-          .localeCompare(b.licencePlate.toLowerCase()),
-      );
-    }
-    if (option === 'dsc') {
-      console.log('dentro de orderString desc');
-      return arrayString.sort((a, b) =>
-        b.licencePlate
-          .toLowerCase()
-          .localeCompare(a.licencePlate.toLowerCase()),
-      );
-    }
-  }
-
-  function pintarDiez(datos) {
-    let nuevaLista = [];
-    let indice = pagination;
+  function selectPages(data) {
+    let newList = [];
+    let index = pagination;
     let maxPosition = 10;
-    if (datos.length - pagination < 10) {
+    if (data.length - pagination < 10) {
       console.log('estamos en la ultima pagina');
-      maxPosition = datos.length % 10;
+      maxPosition = data.length % 10;
     }
 
     for (let i = 0; i < maxPosition; i++) {
-      nuevaLista[i] = datos[indice];
-      console.log(`nuevaLista[${i}]: `, nuevaLista[i]);
-      console.log(`datos[${indice}]`, datos[indice]);
-      indice++;
+      newList[i] = data[index];
+      index++;
     }
-    return nuevaLista;
+    return newList;
   }
 
-  function renderRows(datos) {
-    if (!datos || datos.length <= 1) {
-      return console.log('no hay datos');
+  function renderRows(data) {
+    if (!data || data.length <= 1) {
+      return console.log('no data');
     }
 
-    const listaOrdenada = pintarDiez(elegirOrden(datos));
+    const listForPrint = selectPages(orderList(data));
+    console.log(
+      `marks.length= ${marks.length}, ordenado por la columna: ${filter}, en orden: ${order}`,
+    );
 
-    return listaOrdenada.map(({ licencePlate, model, x, y, id }) => (
+    return listForPrint.map(({ licencePlate, model, x, y, id }) => (
       <tr key={id}>
         <td>{licencePlate}</td>
         <td>{y}</td>
@@ -99,6 +90,98 @@ function TableFilter({ marks }) {
       </tr>
     ));
   }
+
+  function renderHeader() {
+    return (
+      <tr>
+        <th className="item-ordered">
+          <img
+            src={ascArrow}
+            className="arrow arrow-asc"
+            onClick={() => {
+              setFilter('licencePlate');
+              setOrder('asc');
+            }}
+            alt="order Licence Plate asc"
+          />
+          <span>Licence Plate</span>
+          <img
+            src={dscArrow}
+            className="arrow arrow-dsc"
+            onClick={() => {
+              setFilter('licencePlate');
+              setOrder('dsc');
+            }}
+            alt="order Licence Plate desc"
+          />
+        </th>
+        <th className="item-ordered">
+          <img
+            src={ascArrow}
+            className="arrow arrow-asc"
+            onClick={() => {
+              setFilter('y');
+              setOrder('asc');
+            }}
+            alt="order Lat asc"
+          />
+          Lat
+          <img
+            src={dscArrow}
+            className="arrow arrow-dsc"
+            onClick={() => {
+              setFilter('y');
+              setOrder('dsc');
+            }}
+            alt="order Lat desc"
+          />
+        </th>
+        <th className="item-ordered">
+          <img
+            src={ascArrow}
+            className="arrow arrow-asc"
+            onClick={() => {
+              setFilter('x');
+              setOrder('asc');
+            }}
+            alt="order Lng asc"
+          />
+          Lng
+          <img
+            src={dscArrow}
+            className="arrow arrow-dsc"
+            onClick={() => {
+              setFilter('x');
+              setOrder('dsc');
+            }}
+            alt="order Lng desc"
+          />
+        </th>
+        <th className="item-ordered">
+          <img
+            src={ascArrow}
+            className="arrow arrow-asc"
+            onClick={() => {
+              setFilter('model');
+              setOrder('asc');
+            }}
+            alt="order models asc"
+          />
+          Model
+          <img
+            src={dscArrow}
+            className="arrow arrow-dsc"
+            onClick={() => {
+              setFilter('model');
+              setOrder('dsc');
+            }}
+            alt="order models desc"
+          />
+        </th>
+      </tr>
+    );
+  }
+
   const handlePageClick = e => {
     console.log(e);
     setPagination(e.selected * 10);
@@ -106,21 +189,8 @@ function TableFilter({ marks }) {
 
   return (
     <>
-      <table className="resourcesTable">
-        <tr>
-          <th onClick={() => setFilter(1)} className="item-ordered">
-            Licence Plate
-          </th>
-          <th onClick={() => setFilter(5)} className="item-ordered">
-            Lat
-          </th>
-          <th onClick={() => setFilter(8)} className="item-ordered">
-            Lng
-          </th>
-          <th onClick={() => setFilter(4)} className="item-ordered">
-            Model
-          </th>
-        </tr>
+      <table className="resourcesTable" cellSpacing={0}>
+        {renderHeader()}
         {renderRows(marks)}
       </table>
       <ReactPaginate

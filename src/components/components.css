@@ -20,10 +20,19 @@
 .resourcesTable td {
   text-align: center;
   padding: 5px;
-  border: 1px solid orangered;
+  border: 0.1rem solid rgb(252, 126, 80);
 }
 
-.item-ordered:hover {
+.arrow {
+  width: 15px;
+}
+.arrow-asc {
+  margin-right: 15px;
+}
+.arrow-dsc {
+  margin-left: 15px;
+}
+.arrow:hover {
   cursor: pointer;
 }
 
