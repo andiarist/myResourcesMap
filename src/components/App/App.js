@@ -16,14 +16,15 @@ function App() {
     '/api/v1/routers/lisboa/resources?lowerLeftLatLon=38.711046,-9.160096&upperRightLatLon=38.739429,-9.137115&companyZoneIds=545,467,473';
 
   useEffect(() => {
-    getResources(params).then(result => {
-      setResources(result);
-      setResourcesFiltered(result);
-    });
+    getResources(params)
+      .then(result => {
+        setResources(result);
+        setResourcesFiltered(result);
+      })
+      .catch(error => console.log(error));
   }, []);
 
   function handleSubmit(formFilters) {
-    console.log('filtros en App:', formFilters);
     setFilters(formFilters);
   }
 
@@ -40,8 +41,6 @@ function App() {
       setResourcesFiltered(resources);
     }
   }, [filters]);
-
-  console.log('resourcesFiltered en App:', resourcesFiltered);
 
   return (
     <div className="App layout-wrapper">

@@ -7,35 +7,33 @@ import { orderList } from './orderList';
 
 import './TableFilter.css';
 
+export function selectPages(data, pagination) {
+  let newList = [];
+  let index = pagination;
+  let maxPosition = 10;
+  if (data.length - pagination < 10) {
+    maxPosition = data.length % 10;
+  }
+
+  for (let i = 0; i < maxPosition; i++) {
+    newList[i] = data[index];
+    index++;
+  }
+  return newList;
+}
 function TableFilter({ marks }) {
   const [filter, setFilter] = useState('none');
   const [order, setOrder] = useState('asc');
   const [pagination, setPagination] = useState(0);
-
-  function selectPages(data) {
-    let newList = [];
-    let index = pagination;
-    let maxPosition = 10;
-    if (data.length - pagination < 10) {
-      console.log('estamos en la ultima pagina');
-      maxPosition = data.length % 10;
-    }
-
-    for (let i = 0; i < maxPosition; i++) {
-      newList[i] = data[index];
-      index++;
-    }
-    return newList;
-  }
 
   function renderRows(data) {
     if (!data || data.length <= 1) {
       return console.log('no data');
     }
 
-    const listForPrint = selectPages(orderList(data, filter, order));
-    console.log(
-      `marks.length= ${marks.length}, ordenado por la columna: ${filter}, en orden: ${order}`,
+    const listForPrint = selectPages(
+      orderList(data, filter, order),
+      pagination,
     );
 
     return listForPrint.map(({ licencePlate, model, x, y, id }) => (
@@ -140,7 +138,6 @@ function TableFilter({ marks }) {
   }
 
   const handlePageClick = e => {
-    console.log(e);
     setPagination(e.selected * 10);
   };
 
@@ -168,7 +165,7 @@ function TableFilter({ marks }) {
 }
 
 TableFilter.propTypes = {
-  marks: T.arrayOf(T.object),
+  marks: T.arrayOf(T.object).isRequired,
 };
 
 export default TableFilter;

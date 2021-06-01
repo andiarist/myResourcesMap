@@ -21,8 +21,6 @@ const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.
 
 const MapComponent = ({ marks, ...props }) => {
   const [activeMarkerId, setActiveMarkerId] = useState(null);
-  
-  console.log('marks en MapComponent:', marks);
 
   const handleActiveMarker = id => {
     if (id === activeMarkerId) {
