@@ -4,34 +4,25 @@ import 'antd/dist/antd.css';
 import { Checkbox } from 'antd';
 import './NavPannel.css';
 
+export const getTypes = data => {
+  let tipos = [];
+  if (data && data.length > 1) {
+    data.forEach(dat => {
+      tipos.push(dat.resourceType);
+    });
+  }
+
+  return [...new Set(tipos)];
+};
 function NavPannel({ marks, onSubmit, ...props }) {
-  const [filters, setFilters] = useState();
-
-  const getTypes = datos => {
-    let tipos = [];
-    if (datos && datos.length > 1) {
-      datos.forEach(dato => {
-        tipos.push(dato.resourceType);
-      });
-    }
-    tipos.push('bus');
-    tipos.push('bus');
-    tipos.push('bus');
-    tipos.push('coche');
-    tipos.push('coche');
-    tipos.push('coche');
-    tipos.push('bici');
-
-    return [...new Set(tipos)];
-  };
+  const [filters, setFilters] = useState([]);
 
   function onChange(checkedValues) {
-    console.log('checked = ', checkedValues);
     setFilters(checkedValues);
   }
 
-  const handleSubmit = event => {
-    event.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault();
     onSubmit(filters);
   };
 
@@ -42,7 +33,7 @@ function NavPannel({ marks, onSubmit, ...props }) {
         <Checkbox.Group options={getTypes(marks)} onChange={onChange} />
 
         <button type="submit" className="">
-          Filtrar
+          Search
         </button>
       </form>
     </>
@@ -50,8 +41,7 @@ function NavPannel({ marks, onSubmit, ...props }) {
 }
 
 NavPannel.propTypes = {
-  marks: T.arrayOf(T.object),
+  marks: T.arrayOf(T.object).isRequired,
   onSubmit: T.func.isRequired,
 };
-
 export default NavPannel;
