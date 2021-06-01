@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getResources } from './api/resources';
+import { getResources } from '../../api/resources';
 
-import MapComponent from './components/MapComponent';
-import TableFilter from './components/TableFilter';
-import NavPannel from './components/NavPannel';
+import MapComponent from '../MapComponent';
+import TableFilter from '../TableFilter';
+import NavPannel from '../NavPannel';
 
 import './App.css';
 

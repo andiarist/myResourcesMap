@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import T from 'prop-types';
-import ascArrow from '../assets/asc.png';
-import dscArrow from '../assets/dsc.png';
+import ascArrow from '../../assets/asc.png';
+import dscArrow from '../../assets/dsc.png';
+import { orderList } from './orderList';
 
 import './TableFilter.css';
 
@@ -10,52 +11,6 @@ function TableFilter({ marks }) {
   const [filter, setFilter] = useState('none');
   const [order, setOrder] = useState('asc');
   const [pagination, setPagination] = useState(0);
-
-  function orderList(datos) {
-    let lista = [];
-
-    if (filter === 'licencePlate') {
-      if (order === 'asc') {
-        lista = datos.sort((a, b) =>
-          a.licencePlate
-            .toLowerCase()
-            .localeCompare(b.licencePlate.toLowerCase()),
-        );
-      } else {
-        lista = datos.sort((a, b) =>
-          b.licencePlate
-            .toLowerCase()
-            .localeCompare(a.licencePlate.toLowerCase()),
-        );
-      }
-    } else if (filter === 'y') {
-      if (order === 'asc') {
-        lista = datos.sort((a, b) => b.y - a.y);
-      } else {
-        lista = datos.sort((a, b) => a.y - b.y);
-      }
-    } else if (filter === 'x') {
-      if (order === 'asc') {
-        lista = datos.sort((a, b) => b.x - a.x);
-      } else {
-        lista = datos.sort((a, b) => a.x - b.x);
-      }
-    } else if (filter === 'model') {
-      if (order === 'asc') {
-        lista = datos.sort((a, b) =>
-          a.model.toLowerCase().localeCompare(b.model.toLowerCase()),
-        );
-      } else {
-        lista = datos.sort((a, b) =>
-          b.model.toLowerCase().localeCompare(a.model.toLowerCase()),
-        );
-      }
-    } else {
-      lista = datos;
-    }
-
-    return lista;
-  }
 
   function selectPages(data) {
     let newList = [];
@@ -78,7 +33,7 @@ function TableFilter({ marks }) {
       return console.log('no data');
     }
 
-    const listForPrint = selectPages(orderList(data));
+    const listForPrint = selectPages(orderList(data, filter, order));
     console.log(
       `marks.length= ${marks.length}, ordenado por la columna: ${filter}, en orden: ${order}`,
     );
