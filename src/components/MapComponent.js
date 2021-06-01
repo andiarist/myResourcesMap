@@ -8,7 +8,7 @@ import {
   GoogleMap,
   Marker,
 } from 'react-google-maps';
-import './components.css';
+import './MapComponent.css';
 
 const {
   MarkerClusterer,

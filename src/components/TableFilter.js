@@ -4,6 +4,8 @@ import T from 'prop-types';
 import ascArrow from '../assets/asc.png';
 import dscArrow from '../assets/dsc.png';
 
+import './TableFilter.css';
+
 function TableFilter({ marks }) {
   const [filter, setFilter] = useState('none');
   const [order, setOrder] = useState('asc');
