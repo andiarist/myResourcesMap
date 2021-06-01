@@ -19,8 +19,10 @@ const { InfoBox } = require('react-google-maps/lib/components/addons/InfoBox');
 const { REACT_APP_GOOGLE_API_KEY: apiKey } = process.env;
 const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.exp&libraries=geometry,drawing,places`;
 
-const MapComponent = props => {
+const MapComponent = ({ marks, ...props }) => {
   const [activeMarkerId, setActiveMarkerId] = useState(null);
+  
+  console.log('marks en MapComponent:', marks);
 
   const handleActiveMarker = id => {
     if (id === activeMarkerId) {
@@ -39,8 +41,8 @@ const MapComponent = props => {
         enableRetinaIcons
         gridSize={20}>
         {props.isMarkerShown &&
-          props.marks &&
-          props.marks.map(({ id, y, x, batteryLevel, model }) => (
+          marks &&
+          marks.map(({ id, y, x, batteryLevel, model }) => (
             <Marker
               position={{ lat: y, lng: x }}
               key={id}
