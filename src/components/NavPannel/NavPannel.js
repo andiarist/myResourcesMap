@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import T from 'prop-types';
 import 'antd/dist/antd.css';
 import { Checkbox } from 'antd';
+import './NavPannel.css';
 
 function NavPannel({ marks, onSubmit, ...props }) {
   const [filters, setFilters] = useState();
@@ -37,7 +38,7 @@ function NavPannel({ marks, onSubmit, ...props }) {
   return (
     <>
       <h3>Resources: </h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="aside-form">
         <Checkbox.Group options={getTypes(marks)} onChange={onChange} />
 
         <button type="submit" className="">
